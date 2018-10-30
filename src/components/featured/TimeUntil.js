@@ -4,6 +4,35 @@ import Slide from 'react-reveal/Slide';
 class TimeUntil extends Component {
 
     state = {
+        deadline: 'Dec, 16, 2018',
+        days:'0',
+        hours:'0',
+        minutes:'0',
+        seconds:'0'
+    }
+
+    getTimeUntil(deadline) {
+        const time = Date.parse(deadline) - Date.parse(new Date());
+        if(time < 0) {
+          console.log("Consert Ended")
+        } else {
+          const seconds = Math.floor((time/1000)%60);
+          const minutes = Math.floor((time/1000/60)%60);
+          const hours = Math.floor((time/(1000*60*60))%24);
+          const days = Math.floor(time/(1000*60*60*24));
+
+          this.setState({
+            days,
+            hours,
+            minutes,
+            seconds
+          })
+        }
+        console.log(time)
+    }
+
+    componentDidMount() {
+        setInterval(()=> this.getTimeUntil(this.state.deadline),1000);
 
     }
 
@@ -17,7 +46,7 @@ class TimeUntil extends Component {
           <div className="countdown_bottom">
             <div className="countdown_item">
               <div className="countdown_time">
-                23
+                {this.state.days}
                 </div>
               <div className="countdown_tag">
                 Days
@@ -26,7 +55,7 @@ class TimeUntil extends Component {
 
             <div className="countdown_item">
               <div className="countdown_time">
-                2
+                {this.state.hours}
                 </div>
               <div className="countdown_tag">
                 hrs
@@ -35,7 +64,7 @@ class TimeUntil extends Component {
 
             <div className="countdown_item">
               <div className="countdown_time">
-                30
+                {this.state.minutes}
                 </div>
               <div className="countdown_tag">
                 min
@@ -44,7 +73,7 @@ class TimeUntil extends Component {
 
             <div className="countdown_item">
               <div className="countdown_time">
-                8
+                {this.state.seconds}
                 </div>
               <div className="countdown_tag">
                 sec
